@@ -1,0 +1,38 @@
+:root {
+    --spacing: 15px;
+    --blur: 2px;
+    --base: #4c3aad;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    text-align: center;
+    max-width: 1030px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h1 span {
+    color: var(--base);
+}
+
+.options-container {
+    display: flex;
+}
+.options-container > * {
+    width: 100%;
+}
+
+.img-wrapper {
+    width: 100%;
+    padding: var(--spacing);
+    background-color: var(--base);
+    filter: blur(var(--blur));
+}
