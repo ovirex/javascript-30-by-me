@@ -27,6 +27,9 @@ body {
     border: 20px solid white;
     border-radius: 50%;
     position: relative;
+    box-shadow: inset 0px 0px 10px 3px black;
+    padding: 10px;
+    transform: rotate(90deg);
 }
 .clock-frame:after {
     content: "";
@@ -49,16 +52,21 @@ body {
     transform-origin: 100%;
     position: absolute;
     border-radius: 50px;
+    transition: transform 200ms;
+    transition-timing-function: cubic-bezier(0.13, 1.51, 0.57, 0.9);
+    box-shadow: 0 0 8px 0px #70e3e3;
 }
 
-.large-hand {
+.minute-hand {
     width: 50%;
 }
-.md-hand {
+.seconds-hand {
     width: 40%;
     left: 30%;
+
+    height: 5px;
 }
-.sm-hand {
+.hour-hand {
     width: 30%;
     left: 35%;
 }
