@@ -1,6 +1,6 @@
 :root {
     --spacing: 15px;
-    --blur: 2px;
+    --blur: 14px;
     --base: #4c3aad;
 }
 
@@ -13,25 +13,38 @@ body {
     text-align: center;
     max-width: 1030px;
     margin: 0 auto;
+    font-family: "Poppins", sans-serif;
+    background-color: #3f51b5;
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 4rem;
+    text-transform: capitalize;
+    line-height: 1;
+    color: #fff;
 }
 
 h1 span {
     color: var(--base);
+    font-size: 5rem;
 }
 
 .options-container {
     display: flex;
+}
+
+.options-container label {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #fff;
 }
 .options-container > * {
     width: 100%;
 }
 
 .img-wrapper {
-    width: 100%;
+    margin: 3rem 0;
+    max-width: 100%;
     padding: var(--spacing);
     background-color: var(--base);
     filter: blur(var(--blur));
