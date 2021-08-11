@@ -69,27 +69,59 @@ const bornIn1500 = inventors.filter((inventor) => {
         return inventor;
     }
 });
-console.log(bornIn1500);
+console.log("1) Inventors born in the 1500's: ", bornIn1500);
 
 // Array.prototype.map()
 // 2. Give us an array of the inventors first and last names
 const inventorsFullName = inventors.map((inventors) => {
     return `${inventors.first} ${inventors.last}`;
 });
-console.log(inventorsFullName);
+console.log("2) Inventors full name: ", inventorsFullName);
+
 // Array.prototype.sort()
 // 3. Sort the inventors by birthdate, oldest to youngest
+const orderedInventors = inventors.slice().sort((a, b) => {
+    return a.year - b.year;
+});
+console.log("3) Inventors sorted by birthdate (oldest to youngest): ");
+console.table(orderedInventors);
 
 // Array.prototype.reduce()
 // 4. How many years did all the inventors live all together?
+const allInventorsYears = inventors.reduce((acum, curr) => {
+    return acum + (curr.passed - curr.year);
+}, 0);
+console.log(
+    "4) Years of the inventors summed all together: ",
+    allInventorsYears
+);
 
 // 5. Sort the inventors by years lived
+const livedYearsOrdered = inventors.slice().sort((a, b) => {
+    return a.passed - a.year - (b.passed - b.year);
+});
+console.log("5) Inventors sorted by years lived: ");
+console.table(livedYearsOrdered);
 
 // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
 // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+const categoriesWrapper = Array.from(
+    document.querySelectorAll(".mw-category .mw-category-group ul li a")
+);
+
+categoriesWrapper
+    .map((text) => text.textContent)
+    .filter((de) => de.includes("de"));
 
 // 7. sort Exercise
 // Sort the people alphabetically by last name
+const organizedPeople = people.sort((a, b) => {
+    const [aLast, aName] = a.split(", ");
+    const [bLast, bName] = b.split(", ");
+
+    return aLast > bLast ? 1 : -1;
+});
+console.log("7) Sorted people", organizedPeople);
 
 // 8. Reduce Exercise
 // Sum up the instances of each of these
@@ -109,3 +141,9 @@ const data = [
     "car",
     "truck",
 ];
+
+const sumInstances = data.reduce((acum, item) => {
+    acum[item] = (acum[item] || 0) + 1;
+    return acum;
+}, {});
+console.log(sumInstances);
