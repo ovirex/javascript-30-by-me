@@ -1,9 +1,16 @@
-const inputList = Array.from(document.querySelectorAll(".inbox .item input"));
+const checkboxesList = Array.from(
+    document.querySelectorAll(".inbox .item input[type='checkbox']")
+);
+
+// store the 2 latest checkboxes checked
 const checkedList = [];
 
-window.addEventListener("click", (e) => {
-    inputList.forEach((item, index) => {
-        if (item.id == e.target.id) {
+function checkElements(e) {
+    const clickedElement = e.target;
+
+    // Find the index of the clicked element
+    checkboxesList.forEach((checkbox, index) => {
+        if (checkbox == clickedElement) {
             checkedList.push(index);
         }
     });
@@ -17,12 +24,17 @@ window.addEventListener("click", (e) => {
             return a - b;
         });
 
+        // check/uncheck the chekboxes between the 2 already selected
         for (
             let i = orderedCheckedList[0];
             i <= orderedCheckedList[orderedCheckedList.length - 1];
             i++
         ) {
-            inputList[i].checked = e.target.checked;
+            checkboxesList[i].checked = clickedElement.checked;
         }
     }
+}
+
+checkboxesList.forEach((inputs) => {
+    inputs.addEventListener("click", checkElements);
 });
