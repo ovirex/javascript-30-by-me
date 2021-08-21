@@ -6,7 +6,7 @@ const checkboxesList = Array.from(
 const checkedList = [];
 
 function checkElements(e) {
-    const clickedElement = e.target;
+    const clickedElement = this;
 
     // Find the index of the clicked element
     checkboxesList.forEach((checkbox, index) => {
