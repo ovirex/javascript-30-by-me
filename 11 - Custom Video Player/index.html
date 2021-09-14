@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Custom Video Player</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <div class="video-player">
+            <video src="./652333414.mp4"></video>
+            <div class="video-controls">
+                <div class="video-progress-container">
+                    <div class="video-progress-bar"></div>
+                </div>
+                <div class="video-pause-play">▶️</div>
+                <input
+                    class="video-range-setter"
+                    type="range"
+                    name=""
+                    id="vol-setter"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value="1"
+                    title="video volume"
+                />
+                <input
+                    class="video-range-setter"
+                    type="range"
+                    name=""
+                    id="speed-setter"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value="1"
+                    title="video speed"
+                />
+                <div class="video-skip-container">
+                    <div data-skip="-10" class="video-skip">« 10s</div>
+                    <div data-skip="25" class="video-skip">25s »</div>
+                </div>
+            </div>
+        </div>
+        <script src="./index.js" type="text/javascript"></script>
+    </body>
+</html>
