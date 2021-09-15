@@ -23,6 +23,9 @@ window.addEventListener("keydown", function (e) {
     }
 });
 
+videoElement.addEventListener("play", changePlayPauseBtn);
+videoElement.addEventListener("pause", changePlayPauseBtn);
+
 rangeInputs.forEach((range) => range.addEventListener("input", inputSetters));
 
 skipButtons.forEach((skipBtn) => skipBtn.addEventListener("click", skipButton));
@@ -45,10 +48,8 @@ window.addEventListener("mouseup", function () {
 /** Functions */
 function playPauseVideo() {
     if (videoElement.paused) {
-        playPauseButton.textContent = "❚ ❚";
         videoElement.play();
     } else {
-        playPauseButton.textContent = "►";
         videoElement.pause();
     }
 }
@@ -84,5 +85,13 @@ function userMoveProgressBar(e) {
 function userMoveProgressBarWhileHoldingClick(e) {
     if (isMouseDown) {
         userMoveProgressBar(e);
+    }
+}
+
+function changePlayPauseBtn() {
+    if (videoElement.paused) {
+        playPauseButton.textContent = "►";
+    } else {
+        playPauseButton.textContent = "❚ ❚";
     }
 }
