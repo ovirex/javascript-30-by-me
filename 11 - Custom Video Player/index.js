@@ -1,126 +1,83 @@
-/**
- * Boton play/pause (done)
- * input de volumen (done)
- * input de velocidad (done)
- * botones para adelantar y atrazar por segundas (done)
- * actualizar barra de reproducción a medida que avanza el video (done)
- * mover barra de reproducción/progreso (done)
- *
- */
-
+/** Initialize mousedown validator */
 let isMouseDown = false;
 
-window.addEventListener("DOMContentLoaded", function () {
-    const playPauseButton = document.querySelector(".video-pause-play");
-    const videoElement = document.querySelector(".video-player video");
+/** Get elements */
+const playPauseButton = document.querySelector(".video-pause-play");
+const videoElement = document.querySelector(".video-player video");
+const rangeInputs = document.querySelectorAll(
+    ".video-controls input[type='range'"
+);
+const skipButtons = document.querySelectorAll(".video-skip");
+const videoProgressBar = document.querySelector(".video-progress-bar");
+const videoProgressBarContainer = document.querySelector(
+    ".video-progress-container"
+);
 
-    const volumeInput = document.querySelector("#vol-setter");
-    const speedInput = document.querySelector("#speed-setter");
+/**Add events listeners */
 
-    const skip10Backwards = document.querySelector(
-        ".video-skip[data-skip='-10']"
-    );
-    const skip25Forward = document.querySelector(".video-skip[data-skip='25']");
+playPauseButton.addEventListener("click", playPauseVideo);
+videoElement.addEventListener("click", playPauseVideo);
 
-    const videoProgressBar = document.querySelector(".video-progress-bar");
-    const videoProgressBarContainer = document.querySelector(
-        ".video-progress-container"
-    );
+rangeInputs.forEach((range) => range.addEventListener("input", inputSetters));
 
-    playPauseButton.addEventListener("click", playPauseVideo(videoElement));
-    videoElement.addEventListener("click", playPauseVideo(videoElement));
+skipButtons.forEach((skipBtn) => skipBtn.addEventListener("click", skipButton));
 
-    volumeInput.addEventListener("input", inputSetters(videoElement));
-    speedInput.addEventListener("input", inputSetters(videoElement));
+videoElement.addEventListener("timeupdate", updateProgressBar);
 
-    skip10Backwards.addEventListener("click", skipButton(videoElement));
-    skip25Forward.addEventListener("click", skipButton(videoElement));
-
-    videoElement.addEventListener(
-        "timeupdate",
-        updateProgressBar(videoElement)
-    );
-
-    videoProgressBarContainer.addEventListener("mousedown", moveProgressBar);
-    videoProgressBarContainer.addEventListener(
-        "mousemove",
-        moveProgressBarWhileHoldingClick
-    );
-    window.addEventListener("mouseup", function () {
-        isMouseDown = false;
-    });
-
-    videoElement.addEventListener(
-        "mousemove",
-        moveProgressBarWhileHoldingClick
-    );
+videoProgressBarContainer.addEventListener("mousedown", userMoveProgressBar);
+videoProgressBarContainer.addEventListener(
+    "mousemove",
+    userMoveProgressBarWhileHoldingClick
+);
+videoElement.addEventListener(
+    "mousemove",
+    userMoveProgressBarWhileHoldingClick
+);
+window.addEventListener("mouseup", function () {
+    isMouseDown = false;
 });
 
-function playPauseVideo(elementToPlay) {
-    return function () {
-        if (elementToPlay.paused) {
-            elementToPlay.play();
-        } else {
-            elementToPlay.pause();
-        }
-    };
+/** Functions */
+function playPauseVideo() {
+    if (videoElement.paused) {
+        playPauseButton.textContent = "❚ ❚";
+        videoElement.play();
+    } else {
+        playPauseButton.textContent = "►";
+        videoElement.pause();
+    }
 }
 
-function inputSetters(video) {
-    return function () {
-        const inputElement = this;
-
-        if (inputElement.id == "vol-setter") {
-            video.volume = inputElement.value;
-        } else if (inputElement.id == "speed-setter") {
-            video.playbackRate = inputElement.value;
-        }
-    };
+function inputSetters() {
+    const propertyToChange = this.name;
+    videoElement[propertyToChange] = this.value;
 }
 
-function skipButton(video) {
-    return function () {
-        const skipBtn = this;
-        const timeToSkip = parseInt(skipBtn.dataset.skip);
-
-        video.currentTime += timeToSkip;
-        updateProgressBar(video);
-    };
+function skipButton() {
+    const timeToSkip = parseInt(this.dataset.skip);
+    videoElement.currentTime += timeToSkip;
 }
 
-function updateProgressBar(video) {
-    return function () {
-        const videoProgressBar = document.querySelector(".video-progress-bar");
-        const videoProgressBarContainer = document.querySelector(
-            ".video-progress-container"
-        );
-
-        videoProgressBar.style.width =
-            (video.currentTime * videoProgressBarContainer.offsetWidth) /
-                video.duration +
-            "px";
-    };
+function updateProgressBar() {
+    videoProgressBar.style.width =
+        (videoElement.currentTime * videoProgressBarContainer.offsetWidth) /
+            videoElement.duration +
+        "px";
 }
 
-function moveProgressBar(e) {
+function userMoveProgressBar(e) {
     isMouseDown = true;
-    const videoElement = document.querySelector(".video-player video");
-    const videoProgressBar = document.querySelector(".video-progress-bar");
-    const progressBarContainerWidth = document.querySelector(
-        ".video-progress-container"
-    ).clientWidth;
-    const progressBarPosition = e.offsetX;
+    const progressBarClickedPosition = e.offsetX;
 
     const timeOfTheVideo =
-        (progressBarPosition * videoElement.duration) /
-        progressBarContainerWidth;
+        (progressBarClickedPosition * videoElement.duration) /
+        videoProgressBarContainer.clientWidth;
 
     videoElement.currentTime = timeOfTheVideo;
-    videoProgressBar.style.width = progressBarPosition + "px";
 }
 
-function moveProgressBarWhileHoldingClick(e) {
+function userMoveProgressBarWhileHoldingClick(e) {
     if (isMouseDown) {
-        moveProgressBar(e);
+        userMoveProgressBar(e);
     }
 }
