@@ -17,6 +17,11 @@ const videoProgressBarContainer = document.querySelector(
 
 playPauseButton.addEventListener("click", playPauseVideo);
 videoElement.addEventListener("click", playPauseVideo);
+window.addEventListener("keydown", function (e) {
+    if (e.key === " ") {
+        playPauseVideo();
+    }
+});
 
 rangeInputs.forEach((range) => range.addEventListener("input", inputSetters));
 
