@@ -12,7 +12,8 @@ const videoProgressBar = document.querySelector(".video-progress-bar");
 const videoProgressBarContainer = document.querySelector(
     ".video-progress-container"
 );
-
+const videoPlayer = document.querySelector(".video-player");
+const fullScreenBtn = document.querySelector(".fullscreen-btn");
 /**Add events listeners */
 
 playPauseButton.addEventListener("click", playPauseVideo);
@@ -43,6 +44,20 @@ videoElement.addEventListener(
 );
 window.addEventListener("mouseup", function () {
     isMouseDown = false;
+});
+
+fullScreenBtn.addEventListener("click", goFullScreen);
+window.addEventListener("keydown", function (e) {
+    if (e.key.toLowerCase() === "f") {
+        goFullScreen();
+    }
+});
+document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement) {
+        videoElement.classList.add("fullscreen-video");
+    } else {
+        videoElement.classList.remove("fullscreen-video");
+    }
 });
 
 /** Functions */
@@ -93,5 +108,17 @@ function changePlayPauseBtn() {
         playPauseButton.textContent = "►";
     } else {
         playPauseButton.textContent = "❚ ❚";
+    }
+}
+
+function goFullScreen() {
+    if (!document.fullscreenElement) {
+        videoPlayer.requestFullscreen();
+        videoElement.classList.add("fullscreen-video");
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        videoElement.classList.remove("fullscreen-video");
     }
 }
