@@ -30,6 +30,14 @@ videoElement.addEventListener("pause", changePlayPauseBtn);
 rangeInputs.forEach((range) => range.addEventListener("input", inputSetters));
 
 skipButtons.forEach((skipBtn) => skipBtn.addEventListener("click", skipButton));
+window.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+        videoElement.currentTime += -10;
+    }
+    if (e.key === "ArrowRight") {
+        videoElement.currentTime += 25;
+    }
+});
 
 videoElement.addEventListener("timeupdate", updateProgressBar);
 
