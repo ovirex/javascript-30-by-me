@@ -13,7 +13,7 @@
  * una función debe guardar los datos ingresados
  * otra función debe agregar (renderizar) los datos en el array items
  *
- * BONUS: 1. agregar un botón de remove para elimininar cada elemento uno por uno
+ * BONUS: ~~1. agregar un botón de remove para elimininar cada elemento uno por uno~~
  * ~~2. agregar 3 botones: uno que elimine todos los elementos, uno que haga check
  * a todos los elementos y otro que uncheck a todos los elementos~~
  *
@@ -70,6 +70,21 @@ function buttonHandlers(event) {
     renderItems();
 }
 
+// delete an invidual item
+function deleteOneItem(event) {
+    if (event.target.dataset.action !== "delete-one") {
+        return;
+    }
+
+    const liAncestor = event.target.closest("li");
+    const itemPosition = liAncestor.querySelector("input").dataset.index;
+
+    items.splice(itemPosition, 1);
+
+    updateLocalStorage();
+    renderItems();
+}
+
 // Render the items saved in the items array
 function renderItems() {
     platesList.innerHTML = "";
@@ -112,6 +127,7 @@ function updateLocalStorage() {
 form.addEventListener("submit", saveItem);
 form.addEventListener("click", buttonHandlers);
 platesList.addEventListener("click", inputCheckedHandler);
+platesList.addEventListener("click", deleteOneItem);
 
 // Load the items saved in localStorage
 window.addEventListener("load", renderItems);
