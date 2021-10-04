@@ -14,8 +14,8 @@
  * otra función debe agregar (renderizar) los datos en el array items
  *
  * BONUS: 1. agregar un botón de remove para elimininar cada elemento uno por uno
- * 2. agregar 3 botones: uno que elimine todos los elementos, uno que haga check
- * a todos los elementos y otro que uncheck a todos los elementos
+ * ~~2. agregar 3 botones: uno que elimine todos los elementos, uno que haga check
+ * a todos los elementos y otro que uncheck a todos los elementos~~
  *
  */
 
@@ -40,6 +40,33 @@ function saveItem(event) {
     updateLocalStorage();
 
     // render the new addition to the items array
+    renderItems();
+}
+
+// handle the form's buttons delete, check and uncheck
+function buttonHandlers(event) {
+    // return if none of the button has been clicked
+    if (!event.target.dataset.action) {
+        return;
+    }
+
+    const buttonAction = event.target.dataset.action;
+
+    if (buttonAction === "delete") {
+        items.splice(0);
+    } else if (buttonAction === "check") {
+        items.map((elem) => {
+            elem.done = true;
+            return elem;
+        });
+    } else if (buttonAction === "uncheck") {
+        items.map((elem) => {
+            elem.done = false;
+            return elem;
+        });
+    }
+
+    updateLocalStorage();
     renderItems();
 }
 
@@ -83,6 +110,7 @@ function updateLocalStorage() {
 }
 
 form.addEventListener("submit", saveItem);
+form.addEventListener("click", buttonHandlers);
 platesList.addEventListener("click", inputCheckedHandler);
 
 // Load the items saved in localStorage

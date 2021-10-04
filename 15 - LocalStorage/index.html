@@ -55,9 +55,24 @@
                     type="text"
                     name="item"
                     placeholder="Item Name"
-                    required=""
+                    required
                 />
                 <input type="submit" value="+ Add Item" />
+                <input
+                    type="button"
+                    data-action="delete"
+                    value="Delete All Items"
+                />
+                <input
+                    type="button"
+                    data-action="check"
+                    value="Check All Items"
+                />
+                <input
+                    type="button"
+                    data-action="uncheck"
+                    value="Uncheck All Items"
+                />
             </form>
         </div>
         <template id="plates-item-template">
