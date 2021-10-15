@@ -16,6 +16,8 @@ body {
 }
 
 h1 {
-    text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+    text-shadow: 10px 10px 0 rgba(255, 0, 0, 0.8),
+        -10px 10px 0 rgba(4, 0, 255, 0.8), 10px 10px 0 rgba(251, 0, 255, 0.8),
+        10px -10px 0 rgba(0, 255, 8, 0.8);
     font-size: 100px;
 }
