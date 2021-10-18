@@ -42,10 +42,8 @@ console.log("Alphabetically Sorted Array: ");
 console.table(sortedBands);
 
 function deleteArticles(band) {
-    if (band.match(regex) !== null && band.match(regex).index === 0) {
-        return band.replace(regex, "");
-    }
-    return band;
+    const regex = /(An|The|A)\s/i;
+    return band.replace(regex, "");
 }
 
 /** Mostrar Array
