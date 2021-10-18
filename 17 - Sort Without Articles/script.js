@@ -34,19 +34,14 @@ const bands = [
 console.log("Array: ");
 console.table(bands);
 
-bands.sort((bandA, bandB) => {
-    const regex = /(An|The|A)\s/i;
-
-    const foundA = deleteArticles(bandA, regex);
-    const foundB = deleteArticles(bandB, regex);
-
-    return foundA.localeCompare(foundB);
+const sortedBands = bands.sort((bandA, bandB) => {
+    return deleteArticles(bandA).localeCompare(deleteArticles(bandB));
 });
 
 console.log("Alphabetically Sorted Array: ");
-console.table(bands);
+console.table(sortedBands);
 
-function deleteArticles(band, regex) {
+function deleteArticles(band) {
     if (band.match(regex) !== null && band.match(regex).index === 0) {
         return band.replace(regex, "");
     }
@@ -60,7 +55,7 @@ function deleteArticles(band, regex) {
  */
 
 const bandList = document.getElementById("bands");
-const bandHtmlList = bands
+const bandHtmlList = sortedBands
     .map((band) => {
         return `<li>${band}</li>`;
     })
