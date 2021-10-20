@@ -22,3 +22,12 @@ total -= minutes * 60;
 const seconds = total;
 
 console.log(hours, minutes, seconds);
+
+/** wesbos solution to this part */
+// let secondsLeft = total;
+// const hours = Math.floor(secondsLeft / 3600);
+// secondsLeft = secondsLeft % 3600;
+
+// const mins = Math.floor(secondsLeft / 60);
+// secondsLeft = secondsLeft % 60;
+// console.log(hours, mins, secondsLeft);
