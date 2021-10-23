@@ -55,6 +55,10 @@ html {
     background: white;
 }
 
+.strip a {
+    text-decoration: none;
+}
+
 .strip a:nth-child(5n + 1) img {
     transform: rotate(10deg);
 }
