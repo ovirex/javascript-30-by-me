@@ -14,6 +14,7 @@ const ctx = canvas.getContext("2d");
 const strip = document.querySelector(".strip");
 const snap = document.querySelector(".snap");
 
+// Access the webcam and show the webcam video in .player element
 if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     navigator.mediaDevices
         .getUserMedia({ video: true })
@@ -21,9 +22,11 @@ if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
             player.srcObject = mediaStream;
 
             player.addEventListener("loadedmetadata", () => {
+                player.play();
+
+                // set canvas size proportionally to video size
                 canvas.width = player.videoWidth;
                 canvas.height = player.videoHeight;
-                player.play();
             });
             console.log("I see you...");
         })
@@ -34,14 +37,12 @@ if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
 
 // 2. Mostrar ese mismo video en el canvas (.photo)
 
-// solution 1 to task 2
 player.addEventListener("play", () => {
     updateVideo();
     requestAnimationFrame(updateVideo);
 });
-function updateVideo() {
-    // console.time("test1");
 
+function updateVideo() {
     ctx.drawImage(player, 0, 0);
     // take the pixels out
     let pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -55,26 +56,11 @@ function updateVideo() {
     ctx.putImageData(pixels, 0, 0);
 
     requestAnimationFrame(updateVideo);
-    // console.timeEnd("test1");
 }
 
-// solution 2 to task 2
-// player.addEventListener("play", function () {
-//     var $this = this; //cache
-
-//     (function loop() {
-//         // console.time("test2");
-//         // if (!$this.paused && !$this.ended) {
-//         ctx.drawImage($this, 0, 0);
-//         setTimeout(loop, 1000 / 30); // drawing at 30fps
-//         // }
-//         // console.timeEnd("test2");
-//     })();
-// });
-
 // 3. Hacer posible aplicar efectos al canvas (modificar el color de la imagen)
-// set up filter
 
+// set up filter
 function redEffect(pixels) {
     for (let i = 0; i < pixels.data.length; i += 4) {
         pixels.data[i + 0] = pixels.data[i + 0] + 200;
@@ -126,39 +112,22 @@ function greenScreen(pixels) {
 // 5. Mostrar las fotos
 // 6. Poder descargar las fotos
 /**
- * Copiar imagen que se vea en el canvas
+ * Copiar imagen que se ve en el canvas
  * Pasar esa imagen a un url que pueda usarse en 'src' del img tag
  * Agregar imagen a elemento div.strip
  * Hacer posible descargar con el 'a' tag (creo solo agregando el archivo al href, hará posible descargar)
  */
-
 function takePhoto() {
-    console.log("say cheese!!!");
-
-    console.time("toDataURL");
+    // Capture the image from the canvas and add it to the strip html element
     const photoURL = canvas.toDataURL("image/jpeg");
     const ele = document.createElement("a");
     ele.href = photoURL;
     ele.setAttribute("download", "Atractivo-Tipazo");
     ele.innerHTML = `<img src="${photoURL}" />`;
     strip.insertBefore(ele, strip.firstChild);
-    console.timeEnd("toDataURL");
 
     // Make snap sound to play
     snapSound();
-
-    // Capture the image from the canvas and add it to the strip html element
-    // console.time("toBlob");
-    // canvas.toBlob(function (blob) {
-    //     const photoURL = URL.createObjectURL(blob);
-    //     const ele = document.createElement("a");
-
-    //     ele.href = photoURL;
-    //     ele.setAttribute("download", "Atractivo-Tipazo");
-    //     ele.innerHTML = `<img src="${photoURL}" />`;
-    //     strip.insertBefore(ele, strip.firstChild);
-    // }, "image/jpeg");
-    // console.timeEnd("toBlob");
 }
 
 function snapSound() {
