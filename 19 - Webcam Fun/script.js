@@ -39,22 +39,13 @@ if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
 
 player.addEventListener("play", () => {
     updateVideo();
-    requestAnimationFrame(updateVideo);
+    // requestAnimationFrame(updateVideo);
 });
 
 function updateVideo() {
     ctx.drawImage(player, 0, 0);
-    // take the pixels out
-    let pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // mess with them
-    // pixels = redEffect(pixels);
-    pixels = rgbSplit(pixels);
-    // pixels = greenScreen(pixels);
-
-    // put them back
-    ctx.putImageData(pixels, 0, 0);
-
+    effectHandler();
     requestAnimationFrame(updateVideo);
 }
 
@@ -118,6 +109,9 @@ function greenScreen(pixels) {
  * Hacer posible descargar con el 'a' tag (creo solo agregando el archivo al href, hará posible descargar)
  */
 function takePhoto() {
+    // Make snap sound to play
+    snapSound();
+
     // Capture the image from the canvas and add it to the strip html element
     const photoURL = canvas.toDataURL("image/jpeg");
     const ele = document.createElement("a");
@@ -125,12 +119,42 @@ function takePhoto() {
     ele.setAttribute("download", "Atractivo-Tipazo");
     ele.innerHTML = `<img src="${photoURL}" />`;
     strip.insertBefore(ele, strip.firstChild);
-
-    // Make snap sound to play
-    snapSound();
 }
 
 function snapSound() {
     snap.currentTime = 0;
     snap.play();
+}
+
+/**
+ * hacer posible cambiar el efecto en vivo
+ */
+// Change effect
+const effectBtns = Array.from(document.querySelectorAll("button[data-effect]"));
+effectBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+        const effect = this.dataset.effect;
+        chosenEffect = chosenEffect === effect ? "" : effect;
+    });
+});
+
+let chosenEffect;
+function effectHandler() {
+    // take the pixels out
+    let pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // mess with them
+    switch (chosenEffect) {
+        case "redEffect":
+            pixels = redEffect(pixels);
+            break;
+        case "rgbSplit":
+            pixels = rgbSplit(pixels);
+            break;
+        case "greenScreen":
+            pixels = greenScreen(pixels);
+            break;
+    }
+
+    // put them back
+    ctx.putImageData(pixels, 0, 0);
 }
