@@ -102,12 +102,6 @@ function greenScreen(pixels) {
 // 4. Poder tomar fotos/screenshots
 // 5. Mostrar las fotos
 // 6. Poder descargar las fotos
-/**
- * Copiar imagen que se ve en el canvas
- * Pasar esa imagen a un url que pueda usarse en 'src' del img tag
- * Agregar imagen a elemento div.strip
- * Hacer posible descargar con el 'a' tag (creo solo agregando el archivo al href, hará posible descargar)
- */
 function takePhoto() {
     // Make snap sound to play
     snapSound();
@@ -130,13 +124,32 @@ function snapSound() {
  * hacer posible cambiar el efecto en vivo
  */
 // Change effect
-const effectBtns = Array.from(document.querySelectorAll("button[data-effect]"));
-effectBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
-        const effect = this.dataset.effect;
-        chosenEffect = chosenEffect === effect ? "" : effect;
+const controls = document.querySelector(".controls");
+
+controls.addEventListener("click", controlsHandler);
+
+function controlsHandler(e) {
+    if (!e.target.dataset.effect) return;
+
+    const controlsNode = this;
+
+    // Change the effect to apply into the canvas
+    const effect = e.target.dataset.effect;
+    chosenEffect = chosenEffect === effect ? "" : effect;
+
+    // Change the .selected-effect class on the effects buttons
+    Array.from(controlsNode.children).forEach((button) => {
+        if (!e.target.dataset.effect) return;
+
+        button.classList.remove("selected-effect");
     });
-});
+
+    if (chosenEffect === "") {
+        e.target.classList.remove("selected-effect");
+    } else {
+        e.target.classList.add("selected-effect");
+    }
+}
 
 let chosenEffect;
 function effectHandler() {
